@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  trading-bot:
+    build: .
+    container_name: solana-trading-bot
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env:ro
+    environment:
+      - NODE_ENV=production
+      - TZ=UTC
+    networks:
+      - trading-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  trading-network:
+    driver: bridge
